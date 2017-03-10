@@ -7,6 +7,8 @@ class BST{
 		~BST();
 		bool search(int data);
 		void add(int data);
+		void erase(int data);
+		int count();
 		void print(int tipo);
 
 	private:
@@ -16,6 +18,11 @@ class BST{
 		void inorder(nodeT *r);
 		void postorder(nodeT *r);
 		void freeT(nodeT *r);
+		void printLeaves(nodeT *r);
+		int count2(nodeT *r);
+		int howManyChildren(nodeT *r);
+		int prev(nodeT *r);
+		int after(nodeT *r);
 };
 
 BST::BST(){
@@ -69,6 +76,69 @@ void BST::add(int data){
 	}
 }
 
+void BST::erase(int data){
+
+	nodeT *father = NULL;
+	nodeT *aux = root;
+
+	//aux identifica el nodo a borrar, father se queda uno antes de aux
+	while(aux != NULL && aux->getData() != data){
+		father = aux;
+		aux = aux->getData() > data ? aux->getLeft() : aux->getRight();
+	}
+
+	if(aux == NULL)
+		return;
+
+	int howMany = howManyChildren(aux);
+
+	if(howMany == 0){
+		if(father == NULL){
+			root = NULL;
+		}else{
+			if(father->getData() > data){
+				father->setLeft(NULL);
+			}else{
+				father->setRight(NULL);
+			}
+		}
+		delete aux;
+	}
+
+	if(howMany == 1){
+		if(father == NULL){//quiero borrar a root y tiene un hijo
+			if(aux->getLeft() != NULL)
+				root = aux->getLeft();
+			else
+				root = aux->getRight();
+		}
+		else{
+			if(father->getData() > data){
+				if(aux->getLeft() != NULL)
+					father->setLeft(aux->getLeft());
+				else
+					father->setLeft(aux->getRight());
+			}
+			else{
+				if(aux->getLeft() != NULL)
+					father->setRight(aux->getLeft());
+				else{
+					father->setRight(aux->getRight());
+				}
+			}
+		}
+		delete aux;
+	}
+
+	if(howMany == 2){
+		int newData = after(aux);
+		erase(newData);
+		aux->setData(newData);
+	}
+
+
+}
+
 void BST::preorder(nodeT *r){//sirve para clonar un BST
 
 	if(r != NULL){
@@ -96,6 +166,59 @@ void BST::postorder(nodeT *r){
 	}
 }
 
+void BST::printLeaves(nodeT *r){
+	if(r != NULL){
+		if(r->getLeft() == NULL && r->getRight() == NULL)
+			cout<<r->getData()<<" ";
+		else{
+			printLeaves(r->getLeft());
+			printLeaves(r->getRight());
+		}
+	}
+}
+
+int BST::count(){
+	return count2(root);
+}
+
+int BST::count2(nodeT *r){
+	if(r != NULL){
+		return 1 + count2(r->getLeft()) + count2(r->getRight());
+
+	}else{
+		return 0;
+	}
+}
+
+int BST::howManyChildren(nodeT *r){
+	int count = 0;
+	if(r->getLeft() != NULL)
+		count++;
+	if(r->getRight() != NULL)
+		count++;
+
+	return count;
+}
+
+int BST::prev(nodeT *r){
+	nodeT *aux = r->getLeft();
+	while(aux->getRight() != NULL){
+		aux = aux->getRight();
+	}
+
+	return aux->getData();
+}
+
+int BST::after(nodeT *r){
+
+	nodeT *aux = r->getRight();
+	while(aux->getLeft() != NULL){
+		aux = aux->getLeft();
+	}
+
+	return aux->getData();
+}
+
 void BST::print(int tipo){
 
 	switch(tipo){
@@ -110,6 +233,10 @@ void BST::print(int tipo){
 
 		case 3:
 			postorder(root);
+			break;
+
+		case 4: 
+			printLeaves(root);
 			break;
 	}
 }

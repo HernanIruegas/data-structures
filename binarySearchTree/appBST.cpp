@@ -17,6 +17,7 @@ int main(){
 	miArbol.add(12);
 	miArbol.add(11);
 	miArbol.add(30);
+	miArbol.add(18);
 
 	if(miArbol.search(20))
 		cout<<"si lo encontre"<<endl;
@@ -33,6 +34,12 @@ int main(){
 	miArbol.print(2);
 	cout<<endl;
 	miArbol.print(3);
+	cout<<endl;
+	miArbol.print(4);
+	cout<<endl;
+	cout<<"Mi arbol tiene: "<<miArbol.count()<<" nodos"<<endl;
+	miArbol.erase(11);
+	miArbol.print(4)<<endl;
 
 	return 0;
 }
