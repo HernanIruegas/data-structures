@@ -39,7 +39,11 @@ int main(){
 	cout<<endl;
 	cout<<"Mi arbol tiene: "<<miArbol.count()<<" nodos"<<endl;
 	miArbol.erase(11);
-	miArbol.print(4)<<endl;
+	miArbol.print(4);
+	cout<<endl;
+
+	cout<<"la altura es: "<<endl;
+	cout<<miArbol.height()<<endl;
 
 	return 0;
 }

@@ -9,11 +9,14 @@ class BST{
 		void add(int data);
 		void erase(int data);
 		int count();
+		int height();
+		
 		void print(int tipo);
 
 	private:
 
 		nodeT *root;
+		int height(nodeT *aNode);
 		void preorder(nodeT *r);
 		void inorder(nodeT *r);
 		void postorder(nodeT *r);
@@ -21,8 +24,8 @@ class BST{
 		void printLeaves(nodeT *r);
 		int count2(nodeT *r);
 		int howManyChildren(nodeT *r);
-		int prev(nodeT *r);
-		int after(nodeT *r);
+		int predecessor(nodeT *r);
+		int successor(nodeT *r);
 };
 
 BST::BST(){
@@ -55,14 +58,14 @@ bool BST::search(int data){
 	return false;
 }
 
-void BST::add(int data){
+void BST::add(int data){//father se queda siempre un nodo atras de aux, de tal manera que cuando aux apunte a NULL, father está apuntando al nodo al que se le creará un nuevo hijo con la info. del parametro
 	if(root == NULL){
 		root = new nodeT(data);
 	}else{
 		nodeT *father = NULL;
 		nodeT *aux = root;
 		while(aux != NULL){
-			if(aux->getData() == data){
+			if(aux->getData() == data){//we avoid the creation of duplicated data
 				return;
 			}
 			father = aux;
@@ -87,13 +90,13 @@ void BST::erase(int data){
 		aux = aux->getData() > data ? aux->getLeft() : aux->getRight();
 	}
 
-	if(aux == NULL)
+	if(aux == NULL)//no se encontro el número en el arbol
 		return;
 
 	int howMany = howManyChildren(aux);
 
 	if(howMany == 0){
-		if(father == NULL){
+		if(father == NULL){//means that the node we want to erase is the first and only within the tree
 			root = NULL;
 		}else{
 			if(father->getData() > data){
@@ -131,7 +134,7 @@ void BST::erase(int data){
 	}
 
 	if(howMany == 2){
-		int newData = after(aux);
+		int newData = successor(aux);
 		erase(newData);
 		aux->setData(newData);
 	}
@@ -200,7 +203,7 @@ int BST::howManyChildren(nodeT *r){
 	return count;
 }
 
-int BST::prev(nodeT *r){
+int BST::predecessor(nodeT *r){//to get predecessor
 	nodeT *aux = r->getLeft();
 	while(aux->getRight() != NULL){
 		aux = aux->getRight();
@@ -209,7 +212,7 @@ int BST::prev(nodeT *r){
 	return aux->getData();
 }
 
-int BST::after(nodeT *r){
+int BST::successor(nodeT *r){//to get sucessor
 
 	nodeT *aux = r->getRight();
 	while(aux->getLeft() != NULL){
@@ -217,6 +220,31 @@ int BST::after(nodeT *r){
 	}
 
 	return aux->getData();
+}
+
+int BST::height(){
+   
+	if(root == NULL)
+   		return 0;
+
+	nodeT *aux = root;
+	return height(aux);
+}
+
+int BST::height(nodeT *aux){
+
+	int heightLeft = 0;
+    int heightRight = 0;
+
+    if(aux->getLeft() != NULL)
+        heightLeft = height(aux->getLeft());
+    if(aux->getRight() != NULL)
+        heightRight = height(aux->getRight());
+
+    if(heightLeft > heightRight)
+        return heightLeft+1;
+    else
+        return heightRight+1;
 }
 
 void BST::print(int tipo){
