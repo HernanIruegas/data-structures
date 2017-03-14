@@ -1,4 +1,5 @@
 #include "nodeT.h"
+#include "../stack/stack.h"
 class BST{
 	
 	public:
@@ -10,13 +11,12 @@ class BST{
 		void erase(int data);
 		int count();
 		int height();
-		
 		void print(int tipo);
+		void ancestors(int data);
 
 	private:
 
 		nodeT *root;
-		int height(nodeT *aNode);
 		void preorder(nodeT *r);
 		void inorder(nodeT *r);
 		void postorder(nodeT *r);
@@ -26,6 +26,8 @@ class BST{
 		int howManyChildren(nodeT *r);
 		int predecessor(nodeT *r);
 		int successor(nodeT *r);
+		int height(nodeT *aNode);
+		void ancestors(nodeT *aux, int data);
 };
 
 BST::BST(){
@@ -245,6 +247,28 @@ int BST::height(nodeT *aux){
         return heightLeft+1;
     else
         return heightRight+1;
+}
+
+void BST::ancestors(int data){
+	nodeT *aux = root;
+	return ancestors(aux, data);
+}
+
+void BST::ancestors(nodeT *aux, int data){
+	stack<int> myStack;
+
+	while(aux != NULL && aux->getData() != data){
+		myStack.push(aux->getData());
+		aux = (aux->getData() > data) ? aux->getLeft() : aux->getRight();
+	}
+
+	if(myStack.size() > 0){
+		while(!myStack.empty()){
+		cout<<myStack.top()<<" ";
+		myStack.pop();
+		}
+		cout<<endl;
+	}
 }
 
 void BST::print(int tipo){

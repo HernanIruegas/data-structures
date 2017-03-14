@@ -45,5 +45,7 @@ int main(){
 	cout<<"la altura es: "<<endl;
 	cout<<miArbol.height()<<endl;
 
+	miArbol.ancestors(18);
+
 	return 0;
 }
