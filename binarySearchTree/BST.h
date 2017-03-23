@@ -14,7 +14,9 @@ class BST{
 		int height();
 		void print(int tipo);
 		void ancestors(int data);
+		int whereLevelAmI(int data);
 		int  nearstRelative(int num1, int num2);
+		bool operator==(BST &bst1);
 
 	private:
 
@@ -275,6 +277,21 @@ void BST::ancestors(nodeT *aux, int data){
 	}
 }
 
+int BST::whereLevelAmI(int data)
+{
+	if(!search(data))	
+		return -1;
+	else{
+		nodeT *aux = root;
+		int i = 0;
+		while(aux->getData() != data){
+			aux = (aux->getData() > data) ? aux->getLeft() : aux->getRight();
+			i++;
+		}
+		return i;
+	}
+}
+
 int  BST::nearstRelative( int num1, int num2){
 	stack<int> myStack;
 	nodeT *aux = root;
@@ -307,52 +324,51 @@ int  BST::nearstRelative( int num1, int num2){
 	return 0; 
 }
 
-void BST::printlevels(nodeT *aux){
+bool BST::operator==(BST &bst1){
 
-	queue<int> myQueue;
-	nodeT *auxLeft = aux;
-	nodeT *auxRight = aux;
+	nodeT *aux = this.root;
+	nodeT *aux2 = bst1.root;
 
-	myQueue.push(auxLeft->getData());
-
-	while(auxLeft != NULL && auxRight != NULL){
-
-		if(auxLeft->getLeft() != NULL)
-			myQueue.push(auxLeft->getLeft()->getData());
-		if(auxRight->getRight() != NULL)
-			myQueue.push(auxRight->getRight()->getData());
-
+	if(aux != NULL){
 		
-		printlevels(auxLeft->getLeft());
-		printlevels(auxRight->getRight());
-
-		
+		preorder(->getLeft());
+		preorder(r->getRight());
 	}
-
-	cout<<myQueue.front();
-
 
 /*
-while(auxLeft != NULL && auxRight != NULL){
+	if(this->size != otherList.size)
+		return false;
 
-		if(auxLeft->getLeft() != NULL){
-			auxLeft = auxLeft->getLeft();
-			myQueue.push(auxLeft->getData());
-		}
-		if(auxRight->getRight() != NULL){
-			auxRight = auxRight->getRight();
-			myQueue.push(auxRight->getData());
-		}
+	node<T> *aux = this->head;
+	node<T> *aux2 = otherList.head;
 
-		printlevels(auxLeft);
-		printlevels(auxRight);
+	for(int i=0; i<size;i++){
+
+		if(aux->getData() !=  aux2->getData())
+			return false;
+
+		aux = aux->getNext();
+		aux2 = aux2->getNext();
+	}*/
+
+	return true;
+}
+
+void BST::printByLevel(nodeT *r)
+{
+	queue <nodeT*> q;
+	nodeT *aux = root;
+	q.push(aux);
+	while(!q.empty())
+	{
+		aux = q.front();
+		q.pop();
+		cout << aux->getData() << " ";
+		if(aux->getLeft() != NULL) 
+			q.push(aux->getLeft());
+		if(aux->getRight() != NULL) 
+			q.push(aux->getRight());
 	}
-*/
-
-
-
-	//cout<<myQueue.front();
-	//myQueue.pop();
 }
 
 void BST::print(int tipo){
