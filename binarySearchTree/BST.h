@@ -1,5 +1,6 @@
 #include "nodeT.h"
 #include "../stack/stack.h"
+#include <queue>
 class BST{
 	
 	public:
@@ -13,6 +14,7 @@ class BST{
 		int height();
 		void print(int tipo);
 		void ancestors(int data);
+		int  nearstRelative(int num1, int num2);
 
 	private:
 
@@ -28,6 +30,7 @@ class BST{
 		int successor(nodeT *r);
 		int height(nodeT *aNode);
 		void ancestors(nodeT *aux, int data);
+		void printlevels(nodeT *aux);
 };
 
 BST::BST(){
@@ -255,6 +258,7 @@ void BST::ancestors(int data){
 }
 
 void BST::ancestors(nodeT *aux, int data){
+
 	stack<int> myStack;
 
 	while(aux != NULL && aux->getData() != data){
@@ -269,6 +273,86 @@ void BST::ancestors(nodeT *aux, int data){
 		}
 		cout<<endl;
 	}
+}
+
+int  BST::nearstRelative( int num1, int num2){
+	stack<int> myStack;
+	nodeT *aux = root;
+	nodeT *aux2 = root;
+	int arr[50];
+	int size = 0;
+	int i = 0;
+
+	while(aux->getData() !=  num1){
+		myStack.push(aux->getData());
+		if(aux->getData() != num1)
+			aux = (aux->getData() > num1) ? aux->getLeft() : aux->getRight();
+	}
+
+	while(aux2->getData() !=  num2){
+		arr[i] = aux2->getData();
+		if(aux2->getData() != num2)
+			aux2 = (aux2->getData() > num2) ? aux2->getLeft() : aux2->getRight();
+		i++;
+		size++;
+	}
+	
+	while(myStack.empty() == false){
+		for(int iA = size - 1, iB = 0; iA>=0; iA--){
+			if(myStack.top() == arr[iA])
+				return myStack.top();
+		}
+		myStack.pop();
+	}
+	return 0; 
+}
+
+void BST::printlevels(nodeT *aux){
+
+	queue<int> myQueue;
+	nodeT *auxLeft = aux;
+	nodeT *auxRight = aux;
+
+	myQueue.push(auxLeft->getData());
+
+	while(auxLeft != NULL && auxRight != NULL){
+
+		if(auxLeft->getLeft() != NULL)
+			myQueue.push(auxLeft->getLeft()->getData());
+		if(auxRight->getRight() != NULL)
+			myQueue.push(auxRight->getRight()->getData());
+
+		
+		printlevels(auxLeft->getLeft());
+		printlevels(auxRight->getRight());
+
+		
+	}
+
+	cout<<myQueue.front();
+
+
+/*
+while(auxLeft != NULL && auxRight != NULL){
+
+		if(auxLeft->getLeft() != NULL){
+			auxLeft = auxLeft->getLeft();
+			myQueue.push(auxLeft->getData());
+		}
+		if(auxRight->getRight() != NULL){
+			auxRight = auxRight->getRight();
+			myQueue.push(auxRight->getData());
+		}
+
+		printlevels(auxLeft);
+		printlevels(auxRight);
+	}
+*/
+
+
+
+	//cout<<myQueue.front();
+	//myQueue.pop();
 }
 
 void BST::print(int tipo){
@@ -289,6 +373,10 @@ void BST::print(int tipo){
 
 		case 4: 
 			printLeaves(root);
+			break;
+
+		case 5:
+			printlevels(root);
 			break;
 	}
 }

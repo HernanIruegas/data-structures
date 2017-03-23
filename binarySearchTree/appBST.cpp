@@ -47,5 +47,10 @@ int main(){
 
 	miArbol.ancestors(18);
 
+	//miArbol.print(5);
+	
+	cout<<miArbol.nearstRelative(18,28);
+	cout<<endl;
+
 	return 0;
 }
