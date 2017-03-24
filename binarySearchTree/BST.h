@@ -15,8 +15,9 @@ class BST{
 		void print(int tipo);
 		void ancestors(int data);
 		int whereLevelAmI(int data);
+		int maxWidth();
 		int  nearstRelative(int num1, int num2);
-		bool operator==(BST &bst1);
+		//bool operator==(BST &bst1);
 
 	private:
 
@@ -32,7 +33,7 @@ class BST{
 		int successor(nodeT *r);
 		int height(nodeT *aNode);
 		void ancestors(nodeT *aux, int data);
-		void printlevels(nodeT *aux);
+		void printByLevel(nodeT *aux);
 };
 
 BST::BST(){
@@ -292,6 +293,59 @@ int BST::whereLevelAmI(int data)
 	}
 }
 
+int BST::maxWidth(){
+	queue<nodeT*> myQueue;
+	queue<nodeT*> myQueue2;
+	nodeT *aux = root;
+	int max = 0;
+	int counter = 0;
+
+	myQueue.push(aux);
+
+	while(!myQueue.empty()){
+		aux = myQueue.front();
+
+		while(!myQueue.empty()){
+			myQueue2.push(aux);
+			myQueue.pop();
+			aux = myQueue.front();
+		}
+
+		aux = myQueue2.front();
+
+		while(!myQueue2.empty()){
+			if(aux->getLeft() != NULL)
+				myQueue.push(aux->getLeft());
+			if(aux->getRight() != NULL)
+				myQueue.push(aux->getRight());
+			myQueue2.pop();
+			aux = myQueue2.front();
+			counter++;
+		}
+		if(counter > max)
+			max = counter;
+		counter = 0;
+	}
+	return max;
+}
+
+/*
+queue <nodeT*> myQueue;
+	nodeT *aux = root;
+	myQueue.push(aux);
+	while(!myQueue.empty())
+	{
+		aux = myQueue.front();
+		myQueue.pop();
+		cout << aux->getData() << " ";
+		if(aux->getLeft() != NULL) 
+			myQueue.push(aux->getLeft());
+		if(aux->getRight() != NULL) 
+			myQueue.push(aux->getRight());
+	}
+
+	*/
+
 int  BST::nearstRelative( int num1, int num2){
 	stack<int> myStack;
 	nodeT *aux = root;
@@ -324,7 +378,7 @@ int  BST::nearstRelative( int num1, int num2){
 	return 0; 
 }
 
-bool BST::operator==(BST &bst1){
+/*bool BST::operator==(BST &bst1){
 
 	nodeT *aux = this.root;
 	nodeT *aux2 = bst1.root;
@@ -333,7 +387,7 @@ bool BST::operator==(BST &bst1){
 		
 		preorder(->getLeft());
 		preorder(r->getRight());
-	}
+	}*/
 
 /*
 	if(this->size != otherList.size)
@@ -351,23 +405,23 @@ bool BST::operator==(BST &bst1){
 		aux2 = aux2->getNext();
 	}*/
 
-	return true;
-}
+//	return true;
+//}
 
 void BST::printByLevel(nodeT *r)
 {
-	queue <nodeT*> q;
+	queue <nodeT*> myQueue;
 	nodeT *aux = root;
-	q.push(aux);
-	while(!q.empty())
+	myQueue.push(aux);
+	while(!myQueue.empty())
 	{
-		aux = q.front();
-		q.pop();
+		aux = myQueue.front();
+		myQueue.pop();
 		cout << aux->getData() << " ";
 		if(aux->getLeft() != NULL) 
-			q.push(aux->getLeft());
+			myQueue.push(aux->getLeft());
 		if(aux->getRight() != NULL) 
-			q.push(aux->getRight());
+			myQueue.push(aux->getRight());
 	}
 }
 
@@ -392,7 +446,7 @@ void BST::print(int tipo){
 			break;
 
 		case 5:
-			printlevels(root);
+			printByLevel(root);
 			break;
 	}
 }

@@ -47,10 +47,12 @@ int main(){
 
 	miArbol.ancestors(18);
 
-	//miArbol.print(5);
+	miArbol.print(5);
 	
 	cout<<miArbol.nearstRelative(18,28);
 	cout<<endl;
+
+	cout<<miArbol.maxWidth()<<endl;
 
 	return 0;
 }
