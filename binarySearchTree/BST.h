@@ -19,6 +19,7 @@ class BST{
 		int  nearstRelative(int num1, int num2);
 		//bool operator==(const BST bst1);
 		BST(const BST &copyTree);
+		bool isBalanced();
 
 	private:
 
@@ -36,6 +37,7 @@ class BST{
 		void ancestors(nodeT *aux, int data);
 		void printByLevel(nodeT *aux);
 		void populate(nodeT* aux, nodeT* aux2);
+		bool isBalanced2(nodeT *r, int &aux);
 };
 
 BST::BST(){
@@ -383,6 +385,23 @@ void BST::populate(nodeT* aux, nodeT* aux2){
 		a = aux->getRight();
 		b = aux2->getRight();
 		populate(a,b);
+	}
+}
+
+bool BST::isBalanced(){
+	int aux = 0;
+	return isBalanced2(root, aux);
+}
+
+bool BST::isBalanced2(nodeT *r, int &aux){
+	int a1 =0, a2=0;
+	if(r== NULL) return true;
+	else{
+		if(isBalanced2(r->getLeft(),a1) && isBalanced2(r->getRight(),a2)){
+			aux = 1 + (a1>a2?a1:a2);
+			return (abs(a1-a2)<=1);
+		}
+		else return false;
 	}
 }
 
