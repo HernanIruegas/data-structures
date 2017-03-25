@@ -13,9 +13,9 @@ class queue{
 		void pop();
 		T front();
 
-		private:
-			node<T> *last;
-			int length;
+	private:
+		node<T> *last;
+		int length;
 };
 
 template <typename T>

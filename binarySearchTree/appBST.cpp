@@ -32,6 +32,7 @@ int main(){
 	miArbol2.add(30);
 	miArbol2.add(18);
 
+	/*
 	if(miArbol.search(20))
 		cout<<"si lo encontre"<<endl;
 	else
@@ -56,10 +57,12 @@ int main(){
 	cout<<endl;
 
 	cout<<"la altura es: "<<endl;
-	cout<<miArbol.height()<<endl;
+	cout<<miArbol.height()<<endl;*/
 
-	miArbol.ancestors(18);
+	//miArbol.ancestors(39);
+	//cout<<miArbol.whereLevelAmI(14)<<endl;
 
+	/*
 	miArbol.print(5);
 	
 	cout<<miArbol.nearstRelative(18,28);
@@ -68,7 +71,7 @@ int main(){
 	cout<<miArbol.maxWidth()<<endl;
 
 	//if(miArbol == miArbol2)
-	//	cout<<"AWEEEEBEEBOOOOO";
+	//	cout<<"AWEEEEBEEBOOOOO";*/
 
 	return 0;
 }

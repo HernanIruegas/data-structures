@@ -12,12 +12,11 @@ class BST{
 		void erase(int data);
 		int count();
 		int height();
-		void print(int tipo);
+		void print(int type);
 		void ancestors(int data);
 		int whereLevelAmI(int data);
 		int maxWidth();
 		int  nearstRelative(int num1, int num2);
-		//bool operator==(const BST bst1);
 		BST(const BST &copyTree);
 		bool isBalanced();
 		bool operator==(const BST &otherTree);
@@ -35,7 +34,6 @@ class BST{
 		int predecessor(nodeT *r);
 		int successor(nodeT *r);
 		int height(nodeT *aNode);
-		void ancestors(nodeT *aux, int data);
 		void printByLevel(nodeT *aux);
 		void populate(nodeT* aux, nodeT* aux2);
 		bool isBalanced2(nodeT *r, int &aux);
@@ -71,7 +69,9 @@ bool BST::search(int data){
 	return false;
 }
 
-void BST::add(int data){//father se queda siempre un nodo atras de aux, de tal manera que cuando aux apunte a NULL, father está apuntando al nodo al que se le creará un nuevo hijo con la info. del parametro
+void BST::add(int data){//father se queda siempre un nodo atras de aux, de tal manera 
+	//que cuando aux apunte a NULL, father está apuntando al nodo al que se le creará 
+	//un nuevo hijo con la info. del parametro
 	if(root == NULL){
 		root = new nodeT(data);
 	}else{
@@ -84,11 +84,8 @@ void BST::add(int data){//father se queda siempre un nodo atras de aux, de tal m
 			father = aux;
 			aux = aux->getData() > data ? aux->getLeft() : aux->getRight();
 		}
-		if(father->getData() > data){
-			father->setLeft(new nodeT(data));
-		}else{
-			father->setRight(new nodeT(data));
-		}
+		
+		father->getData() > data ? father->setLeft(new nodeT(data)) : father->setRight(new nodeT(data));
 	}
 }
 
@@ -97,7 +94,7 @@ void BST::erase(int data){
 	nodeT *father = NULL;
 	nodeT *aux = root;
 
-	//aux identifica el nodo a borrar, father se queda uno antes de aux
+	//aux identifica el nodo a borrar, father se queda uno antes de aux (en el padre del nodo a borrar)
 	while(aux != NULL && aux->getData() != data){
 		father = aux;
 		aux = aux->getData() > data ? aux->getLeft() : aux->getRight();
@@ -109,39 +106,26 @@ void BST::erase(int data){
 	int howMany = howManyChildren(aux);
 
 	if(howMany == 0){
-		if(father == NULL){//means that the node we want to erase is the first and only within the tree
+	//significa que el nodo que se quiere borrar es el primer y unico elemento del arbol,
+	//es unico porque howMany es igual a 0
+		if(father == NULL)
 			root = NULL;
-		}else{
-			if(father->getData() > data){
-				father->setLeft(NULL);
-			}else{
-				father->setRight(NULL);
-			}
-		}
+		else
+			father->getData() > data ? father->setLeft(NULL) : father->setRight(NULL); 
+
 		delete aux;
 	}
 
 	if(howMany == 1){
+
 		if(father == NULL){//quiero borrar a root y tiene un hijo
-			if(aux->getLeft() != NULL)
-				root = aux->getLeft();
-			else
-				root = aux->getRight();
+			aux->getLeft() != NULL ? root = aux->getLeft() : root = aux->getRight();	
 		}
 		else{
-			if(father->getData() > data){
-				if(aux->getLeft() != NULL)
-					father->setLeft(aux->getLeft());
-				else
-					father->setLeft(aux->getRight());
-			}
-			else{
-				if(aux->getLeft() != NULL)
-					father->setRight(aux->getLeft());
-				else{
-					father->setRight(aux->getRight());
-				}
-			}
+			if(father->getData() > data)//se determina si father va a tener nuevo hijo a su izquierda o a su derecha
+				aux->getLeft() != NULL ? father->setLeft(aux->getLeft()) : father->setLeft(aux->getRight());
+			else
+				aux->getLeft() != NULL ? father->setRight(aux->getLeft()) : father->setRight(aux->getRight());
 		}
 		delete aux;
 	}
@@ -151,8 +135,6 @@ void BST::erase(int data){
 		erase(newData);
 		aux->setData(newData);
 	}
-
-
 }
 
 void BST::preorder(nodeT *r){//sirve para clonar un BST
@@ -198,12 +180,10 @@ int BST::count(){
 }
 
 int BST::count2(nodeT *r){
-	if(r != NULL){
+	if(r != NULL)
 		return 1 + count2(r->getLeft()) + count2(r->getRight());
-
-	}else{
+	else
 		return 0;
-	}
 }
 
 int BST::howManyChildren(nodeT *r){
@@ -216,7 +196,7 @@ int BST::howManyChildren(nodeT *r){
 	return count;
 }
 
-int BST::predecessor(nodeT *r){//to get predecessor
+int BST::predecessor(nodeT *r){
 	nodeT *aux = r->getLeft();
 	while(aux->getRight() != NULL){
 		aux = aux->getRight();
@@ -225,7 +205,7 @@ int BST::predecessor(nodeT *r){//to get predecessor
 	return aux->getData();
 }
 
-int BST::successor(nodeT *r){//to get sucessor
+int BST::successor(nodeT *r){
 
 	nodeT *aux = r->getRight();
 	while(aux->getLeft() != NULL){
@@ -261,12 +241,8 @@ int BST::height(nodeT *aux){
 }
 
 void BST::ancestors(int data){
+
 	nodeT *aux = root;
-	return ancestors(aux, data);
-}
-
-void BST::ancestors(nodeT *aux, int data){
-
 	stack<int> myStack;
 
 	while(aux != NULL && aux->getData() != data){
@@ -276,8 +252,8 @@ void BST::ancestors(nodeT *aux, int data){
 
 	if(myStack.size() > 0){
 		while(!myStack.empty()){
-		cout<<myStack.top()<<" ";
-		myStack.pop();
+			cout<<myStack.top()<<" ";
+			myStack.pop();
 		}
 		cout<<endl;
 	}
@@ -295,6 +271,23 @@ int BST::whereLevelAmI(int data)
 			i++;
 		}
 		return i;
+	}
+}
+
+void BST::printByLevel(nodeT *r)
+{
+	queue <nodeT*> myQueue;
+	nodeT *aux = root;
+	myQueue.push(aux);
+	while(!myQueue.empty())
+	{
+		aux = myQueue.front();
+		myQueue.pop();
+		cout << aux->getData() << " ";
+		if(aux->getLeft() != NULL) 
+			myQueue.push(aux->getLeft());
+		if(aux->getRight() != NULL) 
+			myQueue.push(aux->getRight());
 	}
 }
 
@@ -439,26 +432,9 @@ bool BST::operator==(const BST &otherTree){
 	return true;
 }
 
-void BST::printByLevel(nodeT *r)
-{
-	queue <nodeT*> myQueue;
-	nodeT *aux = root;
-	myQueue.push(aux);
-	while(!myQueue.empty())
-	{
-		aux = myQueue.front();
-		myQueue.pop();
-		cout << aux->getData() << " ";
-		if(aux->getLeft() != NULL) 
-			myQueue.push(aux->getLeft());
-		if(aux->getRight() != NULL) 
-			myQueue.push(aux->getRight());
-	}
-}
+void BST::print(int type){
 
-void BST::print(int tipo){
-
-	switch(tipo){
+	switch(type){
 
 		case 1: 
 			preorder(root);
