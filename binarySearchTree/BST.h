@@ -20,6 +20,7 @@ class BST{
 		//bool operator==(const BST bst1);
 		BST(const BST &copyTree);
 		bool isBalanced();
+		bool operator==(const BST &otherTree);
 
 	private:
 
@@ -405,32 +406,38 @@ bool BST::isBalanced2(nodeT *r, int &aux){
 	}
 }
 
-/*bool BST::operator==(const BST bst1){
-	nodeT *aux = root;
-	nodeT *aux2 = bst1.root;
-
+bool BST::operator==(const BST &otherTree){
 	queue <nodeT*> myQueue;
-	queue <nodeT*> myQueue2;
+
+	nodeT *aux = root;
+	nodeT *aux2 = otherTree.root;
+
+	if(aux == NULL && aux2 == NULL) return true;
+	if(aux == NULL || aux2 == NULL) return false;
 
 	myQueue.push(aux);
-	myQueue2.push(aux2);
+	myQueue.push(aux2);
 
-	while(!myQueue.empty() || !myQueue2.empty())
-	{
+	while(!myQueue.empty()){
 		aux = myQueue.front();
-		aux2 = myQueue2.front();
 		myQueue.pop();
-		myQueue2.pop();
-		cout << aux->getData() << " ";
-		if(aux->getLeft() != NULL) 
-			myQueue.push(aux->getLeft());
-		if(aux->getRight() != NULL) 
-			myQueue.push(aux->getRight());
+		if(myQueue.empty()) return false;
+		else{
+			aux2 = myQueue.front();
+			myQueue.pop();
+		}
+
+		if(aux->getData() != aux2->getData()) return false;
+
+		if(aux->getLeft() != NULL) myQueue.push(aux->getLeft());
+		if(aux2->getLeft() != NULL) myQueue.push(aux2->getLeft());
+		if(aux->getRight() != NULL) myQueue.push(aux->getRight());
+		if(aux2->getRight() != NULL) myQueue.push(aux2->getRight());
+
 	}
 
-
 	return true;
-}*/
+}
 
 void BST::printByLevel(nodeT *r)
 {
