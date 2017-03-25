@@ -17,7 +17,8 @@ class BST{
 		int whereLevelAmI(int data);
 		int maxWidth();
 		int  nearstRelative(int num1, int num2);
-		//bool operator==(BST &bst1);
+		//bool operator==(const BST bst1);
+		BST(const BST &copyTree);
 
 	private:
 
@@ -34,6 +35,7 @@ class BST{
 		int height(nodeT *aNode);
 		void ancestors(nodeT *aux, int data);
 		void printByLevel(nodeT *aux);
+		void populate(nodeT* aux, nodeT* aux2);
 };
 
 BST::BST(){
@@ -329,23 +331,6 @@ int BST::maxWidth(){
 	return max;
 }
 
-/*
-queue <nodeT*> myQueue;
-	nodeT *aux = root;
-	myQueue.push(aux);
-	while(!myQueue.empty())
-	{
-		aux = myQueue.front();
-		myQueue.pop();
-		cout << aux->getData() << " ";
-		if(aux->getLeft() != NULL) 
-			myQueue.push(aux->getLeft());
-		if(aux->getRight() != NULL) 
-			myQueue.push(aux->getRight());
-	}
-
-	*/
-
 int  BST::nearstRelative( int num1, int num2){
 	stack<int> myStack;
 	nodeT *aux = root;
@@ -378,35 +363,55 @@ int  BST::nearstRelative( int num1, int num2){
 	return 0; 
 }
 
-/*bool BST::operator==(BST &bst1){
+BST::BST(const BST &copyTree){
+	nodeT *aux2 = copyTree.root;
+	root = new nodeT(aux2->getData());
+	nodeT *aux = root;
+	populate(aux, aux2);
+}
 
-	nodeT *aux = this.root;
+void BST::populate(nodeT* aux, nodeT* aux2){
+	nodeT *a,*b;
+	if(aux2->getLeft() != NULL){
+		aux->setLeft(new nodeT(aux2->getLeft()->getData()));
+		a = aux->getLeft();
+		b = aux2->getLeft();
+		populate(a,b);
+	}
+	if(aux2->getRight() != NULL){
+		aux->setRight(new nodeT(aux2->getRight()->getData()));
+		a = aux->getRight();
+		b = aux2->getRight();
+		populate(a,b);
+	}
+}
+
+/*bool BST::operator==(const BST bst1){
+	nodeT *aux = root;
 	nodeT *aux2 = bst1.root;
 
-	if(aux != NULL){
-		
-		preorder(->getLeft());
-		preorder(r->getRight());
-	}*/
+	queue <nodeT*> myQueue;
+	queue <nodeT*> myQueue2;
 
-/*
-	if(this->size != otherList.size)
-		return false;
+	myQueue.push(aux);
+	myQueue2.push(aux2);
 
-	node<T> *aux = this->head;
-	node<T> *aux2 = otherList.head;
+	while(!myQueue.empty() || !myQueue2.empty())
+	{
+		aux = myQueue.front();
+		aux2 = myQueue2.front();
+		myQueue.pop();
+		myQueue2.pop();
+		cout << aux->getData() << " ";
+		if(aux->getLeft() != NULL) 
+			myQueue.push(aux->getLeft());
+		if(aux->getRight() != NULL) 
+			myQueue.push(aux->getRight());
+	}
 
-	for(int i=0; i<size;i++){
 
-		if(aux->getData() !=  aux2->getData())
-			return false;
-
-		aux = aux->getNext();
-		aux2 = aux2->getNext();
-	}*/
-
-//	return true;
-//}
+	return true;
+}*/
 
 void BST::printByLevel(nodeT *r)
 {

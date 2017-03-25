@@ -19,6 +19,19 @@ int main(){
 	miArbol.add(30);
 	miArbol.add(18);
 
+	BST miArbol2;
+	miArbol2.add(14);
+	miArbol2.add(39);
+	miArbol2.add(20);
+	miArbol2.add(5);
+	miArbol2.add(10);
+	miArbol2.add(25);
+	miArbol2.add(28);
+	miArbol2.add(12);
+	miArbol2.add(11);
+	miArbol2.add(30);
+	miArbol2.add(18);
+
 	if(miArbol.search(20))
 		cout<<"si lo encontre"<<endl;
 	else
@@ -53,6 +66,9 @@ int main(){
 	cout<<endl;
 
 	cout<<miArbol.maxWidth()<<endl;
+
+	//if(miArbol == miArbol2)
+	//	cout<<"AWEEEEBEEBOOOOO";
 
 	return 0;
 }
