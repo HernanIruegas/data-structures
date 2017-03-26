@@ -17,6 +17,7 @@ class BST{
 		int whereLevelAmI(int data);
 		int maxWidth();
 		int  nearstRelative(int num1, int num2);
+		bool search2(nodeT *aux, int data);
 		BST(const BST &copyTree);
 		bool isBalanced();
 		bool operator==(const BST &otherTree);
@@ -291,42 +292,71 @@ void BST::printByLevel(nodeT *r)
 	}
 }
 
+//calcula la anchura de todos los niveles del arbol
+//regresa el nivel más ancho (en número)
 int BST::maxWidth(){
-	queue<nodeT*> myQueue;
-	queue<nodeT*> myQueue2;
+	queue <nodeT*> myQueue;
 	nodeT *aux = root;
-	int max = 0;
-	int counter = 0;
 
+	if(root == NULL) 
+		return 0;
+
+	int maxWidth = 0, width;
 	myQueue.push(aux);
 
 	while(!myQueue.empty()){
-		aux = myQueue.front();
+		width = myQueue.size();
 
-		while(!myQueue.empty()){
-			myQueue2.push(aux);
+		if(width > maxWidth) 
+			maxWidth = width;
+
+		while(width > 0){
+			if(myQueue.front()->getLeft() != NULL) 
+				myQueue.push(myQueue.front()->getLeft());
+			if(myQueue.front()->getRight() != NULL) 
+				myQueue.push(myQueue.front()->getRight());
+
 			myQueue.pop();
-			aux = myQueue.front();
+			width--;
 		}
-
-		aux = myQueue2.front();
-
-		while(!myQueue2.empty()){
-			if(aux->getLeft() != NULL)
-				myQueue.push(aux->getLeft());
-			if(aux->getRight() != NULL)
-				myQueue.push(aux->getRight());
-			myQueue2.pop();
-			aux = myQueue2.front();
-			counter++;
-		}
-		if(counter > max)
-			max = counter;
-		counter = 0;
 	}
-	return max;
+	return maxWidth;
 }
 
+//Regrese el ancestro mas cercano de dos enteros.
+int BST::nearstRelative(int num1, int num2){
+	nodeT *aux = root, *aux2;
+	while(aux != NULL && aux->getData() != num1 && aux->getData() != num2){
+			if(aux->getData() > num1 && aux->getData() > num2){
+				aux = aux->getLeft();
+				aux2 = aux;
+			}else if(aux->getData() < num1 && aux->getData() < num2){
+				aux2 = aux;
+				aux = aux->getRight();
+			}else{
+				if(search2(aux,num1) && search2(aux,num2))
+					return aux->getData();
+				else 
+					return -1;
+			}
+	}
+	if(aux == NULL) 
+		return -1;
+	else 
+		return aux2->getData();
+}
+
+bool BST::search2(nodeT *aux, int data){
+	while (aux != NULL){
+		if (aux->getData() == data)
+			return true;
+		aux = (aux->getData() > data) ? aux->getLeft() : aux->getRight();
+	}
+	return false;
+}
+
+//first solution to nearstRelative
+/*
 int  BST::nearstRelative( int num1, int num2){
 	stack<int> myStack;
 	nodeT *aux = root;
@@ -358,6 +388,7 @@ int  BST::nearstRelative( int num1, int num2){
 	}
 	return 0; 
 }
+*/
 
 BST::BST(const BST &copyTree){
 	nodeT *aux2 = copyTree.root;
@@ -382,6 +413,10 @@ void BST::populate(nodeT* aux, nodeT* aux2){
 	}
 }
 
+/*
+ Regresa true si el arbol tiene todos sus nodos parcialmente balanceados 
+ (maximo 1 de diferencia de altura de los subarboles de cada nodo)
+*/
 bool BST::isBalanced(){
 	int aux = 0;
 	return isBalanced2(root, aux);
