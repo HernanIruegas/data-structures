@@ -107,9 +107,7 @@ void BST::erase(int data){
 	int howMany = howManyChildren(aux);
 
 	if(howMany == 0){
-	//significa que el nodo que se quiere borrar es el primer y unico elemento del arbol,
-	//es unico porque howMany es igual a 0
-		if(father == NULL)
+		if(father == NULL)//significa que el nodo que se quiere borrar es el primer y unico elemento del arbol, es unico porque howMany es igual a 0
 			root = NULL;
 		else
 			father->getData() > data ? father->setLeft(NULL) : father->setRight(NULL); 
@@ -251,6 +249,8 @@ void BST::ancestors(int data){
 		aux = (aux->getData() > data) ? aux->getLeft() : aux->getRight();
 	}
 
+	if(aux == NULL) return; 
+
 	if(myStack.size() > 0){
 		while(!myStack.empty()){
 			cout<<myStack.top()<<" ";
@@ -328,8 +328,9 @@ int BST::nearstRelative(int num1, int num2){
 	nodeT *aux = root, *aux2;
 	while(aux != NULL && aux->getData() != num1 && aux->getData() != num2){
 			if(aux->getData() > num1 && aux->getData() > num2){
-				aux = aux->getLeft();
 				aux2 = aux;
+				aux = aux->getLeft();
+				
 			}else if(aux->getData() < num1 && aux->getData() < num2){
 				aux2 = aux;
 				aux = aux->getRight();
