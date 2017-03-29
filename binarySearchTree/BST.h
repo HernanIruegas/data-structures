@@ -21,6 +21,7 @@ class BST{
 		BST(const BST &copyTree);
 		bool isBalanced();
 		bool operator==(const BST &otherTree);
+		int smallest();
 
 	private:
 
@@ -466,6 +467,14 @@ bool BST::operator==(const BST &otherTree){
 	}
 
 	return true;
+}
+
+int BST::smallest(){
+	nodeT *aux = root;
+	while(aux->getLeft() != NULL)
+		aux = aux->getLeft();
+
+	return aux->getData();
 }
 
 void BST::print(int type){

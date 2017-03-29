@@ -62,7 +62,7 @@ int main(){
 	//miArbol.ancestors(39);
 	//cout<<miArbol.whereLevelAmI(14)<<endl;
 
-	cout<<miArbol.nearstRelative(25,20);
+	//cout<<miArbol.nearstRelative(25,20);
 
 	/*
 	miArbol.print(5);
@@ -74,6 +74,8 @@ int main(){
 
 	//if(miArbol == miArbol2)
 	//	cout<<"AWEEEEBEEBOOOOO";*/
+
+	cout<<miArbol.smallest()<<endl;
 
 	return 0;
 }
