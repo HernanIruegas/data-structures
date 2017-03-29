@@ -75,7 +75,10 @@ int main(){
 	//if(miArbol == miArbol2)
 	//	cout<<"AWEEEEBEEBOOOOO";*/
 
-	cout<<miArbol.smallest()<<endl;
+	//cout<<miArbol.smallest()<<endl;
+
+	//cout<<miArbol.descendants(14)<<endl;
+
 
 	return 0;
 }

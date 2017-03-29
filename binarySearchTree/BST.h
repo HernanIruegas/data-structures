@@ -22,6 +22,8 @@ class BST{
 		bool isBalanced();
 		bool operator==(const BST &otherTree);
 		int smallest();
+		int descendants(int num);
+		int count3(nodeT *aux);
 
 	private:
 
@@ -476,6 +478,25 @@ int BST::smallest(){
 
 	return aux->getData();
 }
+
+int BST::descendants(int num){
+	nodeT *aux = root;
+	if(!search(num))
+		return -1;
+	while(aux->getData() != num)
+		aux->getData() > num ? aux = aux->getLeft() : aux = aux->getRight();
+
+	return (1 - (count3(aux))) * -1;
+}
+
+int BST::count3(nodeT *aux){
+	if(aux != NULL)
+		return 1 + count3(aux->getLeft()) + count3(aux->getRight());
+	else
+		return 0;
+}
+
+
 
 void BST::print(int type){
 
