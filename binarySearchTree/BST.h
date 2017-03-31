@@ -24,6 +24,7 @@ class BST{
 		int smallest();
 		int descendants(int num);
 		int count3(nodeT *aux);
+		void printNodesAtLevel(int currentLevel, int level);
 
 	private:
 
@@ -496,7 +497,20 @@ int BST::count3(nodeT *aux){
 		return 0;
 }
 
-
+/*void BST::printNodesAtLevel(nodeT *aux, int currentLevel, int level) {
+  
+  nodeT *aux = root;
+  if(aux == NULL) {
+      return;   
+  }  
+  if(currentLevel == level) {
+     cout<<aux->getData();
+     return;
+  }
+              
+  printNodesAtLevel(aux->getLeft(), currentLevel+1, level);
+  printNodesAtLevel(aux->getRight(), currentLevel+1, level);
+}*/
 
 void BST::print(int type){
 

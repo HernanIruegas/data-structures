@@ -32,6 +32,7 @@ int main(){
 	miArbol2.add(30);
 	miArbol2.add(18);
 
+
 	/*
 	if(miArbol.search(20))
 		cout<<"si lo encontre"<<endl;
@@ -78,7 +79,6 @@ int main(){
 	//cout<<miArbol.smallest()<<endl;
 
 	//cout<<miArbol.descendants(14)<<endl;
-
 
 	return 0;
 }
