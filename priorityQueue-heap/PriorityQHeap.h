@@ -49,18 +49,36 @@ void PriorityQHeap::push(int num){//recorrido de derecha a izquierda en el arreg
 	howMany++;
 }
 
-
 void PriorityQHeap::pop(){//recorrido de izquierda a derecha en el arreglo
 	int aux = 1;
+	a[aux] = a[howMany];
+	int temp;
 
-	while(aux <= howMany){
-		if(priority){
-			if(a[aux*2] > a[aux*2+1]) a[aux] = a[aux*2], aux = aux*2;
-			else a[aux] = a[aux*2+1], aux = aux*2+1;
+	if(priority){
+		while(a[aux] < a[aux*2] || a[aux] < a[aux*2+1]){
+			temp = a[aux];
+			if(a[aux*2] > a[aux*2+1]){
+				a[aux] = a[aux*2];
+				a[aux*2] = temp;
+				aux = aux*2;
+			}else{
+				a[aux] = a[aux*2+1];
+				a[aux*2+1] = temp;
+				aux = aux*2+1;
+			}
 		}
-		else{
-			if(a[aux*2] < a[aux*2+1]) a[aux] = a[aux*2], aux = aux*2;
-			else a[aux] = a[aux*2+1], aux = aux*2+1;
+	}else{
+		while(a[aux] > a[aux*2] || a[aux] > a[aux*2+1]){
+			temp = a[aux];
+			if(a[aux*2] < a[aux*2+1]){
+				a[aux] = a[aux*2];
+				a[aux*2] = temp;
+				aux = aux*2;
+			}else{
+				a[aux] = a[aux*2+1];
+				a[aux*2+1] = temp;
+				aux = aux*2+1;
+			}
 		}
 	}
 
