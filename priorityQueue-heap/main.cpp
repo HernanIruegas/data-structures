@@ -1,10 +1,10 @@
 #include <iostream>
 using namespace std;
-#include "PriorityQHeap.h"
+#include "Priority.h"
 
 int main(){
 
-	PriorityQHeap pqh;
+	Priority pqh;
 	
 	/*pqh.push(8);
 	pqh.push(14);

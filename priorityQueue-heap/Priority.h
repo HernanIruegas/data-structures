@@ -1,8 +1,8 @@
-class PriorityQHeap{
+class Priority{
 
 	public:
-		PriorityQHeap();
-		PriorityQHeap(bool priority);
+		Priority();
+		Priority(bool priority);
 		void push(int num);
 		void pop();
 		int top();
@@ -14,42 +14,37 @@ class PriorityQHeap{
 		int a[101];
 		bool priority;
 		int howMany;
+		bool compare(int x, int y);
 };
 
-PriorityQHeap::PriorityQHeap(){
+Priority::Priority(){
 	priority = true;
 	howMany = 0;
 }
 
-PriorityQHeap::PriorityQHeap(bool priority){
+Priority::Priority(bool priority){
 	this->priority = priority;
 	howMany = 0;
 }
 
-void PriorityQHeap::push(int num){//recorrido de derecha a izquierda en el arreglo
+bool Priority::compare(int x, int y){
+	return (priority ? x > y : x < y);
+}
+
+void Priority::push(int num){//recorrido de derecha a izquierda en el arreglo
 	int aux = howMany+1;
 	a[aux] = num;
-
-	if(priority){
-		//mientras que el # que va a entrar sea mayor que su padre
-		while(a[aux] > a[aux/2] && howMany>0 && aux>1){
-			int temp = a[aux/2];
-			a[aux/2] = a[aux];
-			a[aux] = temp;
-			aux = aux/2;
-		}
-	}else{
-		while(a[aux] < a[aux/2] && howMany>0 && aux>1){
-			int temp = a[aux/2];
-			a[aux/2] = a[aux];
-			a[aux] = temp;
-			aux = aux/2;
-		}
+	int temp;
+	while (!compare(a[aux/2],a[aux]) && howMany>0 && aux>1){
+		temp = a[aux/2];
+		a[aux/2] = a[aux];
+		a[aux] = temp;
+		aux = aux/2;
 	}
 	howMany++;
 }
 
-void PriorityQHeap::pop(){//recorrido de izquierda a derecha en el arreglo
+void Priority::pop(){//recorrido de izquierda a derecha en el arreglo
 	int aux = 1;
 	a[aux] = a[howMany];
 	int temp;
@@ -91,19 +86,19 @@ void PriorityQHeap::pop(){//recorrido de izquierda a derecha en el arreglo
 	howMany--;
 }
 
-int PriorityQHeap::top(){
+int Priority::top(){
 	return a[1];
 }
 
-int PriorityQHeap::size(){
+int Priority::size(){
 	return howMany;
 }
 
-bool PriorityQHeap::empty(){
+bool Priority::empty(){
 	return howMany == 0;
 }
 
-void PriorityQHeap::print(){
+void Priority::print(){
 	for(int i=1; i<=howMany; i++)
 		cout<<a[i]<<" ";
 }
