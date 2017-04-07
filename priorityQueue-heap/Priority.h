@@ -48,33 +48,14 @@ void Priority::pop(){//recorrido de izquierda a derecha en el arreglo
 	int aux = 1;
 	a[aux] = a[howMany];
 	int temp;
+	int aux2 = compare(a[aux*2],a[aux*2+1]) ? 2 : 3;
 
-	if(priority){
-		while(a[aux] < a[aux*2] || a[aux] < a[aux*2+1]){
-			temp = a[aux];
-			if(a[aux*2] > a[aux*2+1]){
-				a[aux] = a[aux*2];
-				a[aux*2] = temp;
-				aux = aux*2;
-			}else{
-				a[aux] = a[aux*2+1];
-				a[aux*2+1] = temp;
-				aux = aux*2+1;
-			}
-		}
-	}else{
-		while(a[aux] > a[aux*2] || a[aux] > a[aux*2+1]){
-			temp = a[aux];
-			if(a[aux*2] < a[aux*2+1]){
-				a[aux] = a[aux*2];
-				a[aux*2] = temp;
-				aux = aux*2;
-			}else{
-				a[aux] = a[aux*2+1];
-				a[aux*2+1] = temp;
-				aux = aux*2+1;
-			}
-		}
+	while(!compare(a[aux],a[aux2])){
+		temp = a[aux];
+		a[aux] = a[aux2];
+		a[aux2] = temp;
+		aux = aux2;
+		aux2 = compare(a[aux*2],a[aux*2+1]) ? aux * 2 : aux * 2 + 1;
 	}
 
 	if(howMany - aux/2 == 1)
