@@ -6,13 +6,15 @@ int main(){
 
 	PriorityQHeap pqh;
 	
-	pqh.push(19);
-	pqh.push(29);
+	pqh.push(8);
+	pqh.push(14);
 	pqh.push(5);
+	pqh.push(20);
+	pqh.push(30);
+	pqh.push(21);
 	pqh.push(10);
-	pqh.push(70);
+	pqh.push(15);
 
-	cout<<pqh.top()<<endl;
 	pqh.print();
 	cout<<endl;
 	pqh.pop();

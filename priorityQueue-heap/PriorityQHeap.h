@@ -26,62 +26,51 @@ PriorityQHeap::PriorityQHeap(bool priority){
 	howMany = 0;
 }
 
-void PriorityQHeap::push(int num){
-	if(howMany==0){
-		a[howMany+1] = num;
-		howMany++;
-		return;
-	}
-	if(a[(howMany+1)/2] > num){
-		a[howMany+1] = num;
-		howMany++;
-		return;
-	}else{
-		//hacemos el intercambio de los valores en el arreglo
-		int temp = a[(howMany+1)/2];
-		a[(howMany+1)/2] = num;
-		a[howMany+1] = temp;
+void PriorityQHeap::push(int num){//recorrido de derecha a izquierda en el arreglo
+	int aux = howMany+1;
+	a[aux] = num;
 
-		int position = (howMany+1)/2; //lugar en donde está el # que cambio de casilla
-		for(int i = position; i>1; i/=2){
-			if(a[position] < a[position/2])
-				return;
-			else{
-				//hacemos el intercambio de los valores en el arreglo
-				temp = a[position/2];
-				a[position/2] = a[position];
-				a[position] = temp;
-				position = position/2;
-			}
+	if(priority){
+		//mientras que el # que va a entrar sea mayor que su padre
+		while(a[aux] > a[aux/2] && howMany>0 && aux>1){
+			int temp = a[aux/2];
+			a[aux/2] = a[aux];
+			a[aux] = temp;
+			aux = aux/2;
 		}
-		howMany++;
+	}else{
+		while(a[aux] < a[aux/2] && howMany>0 && aux>1){
+			int temp = a[aux/2];
+			a[aux/2] = a[aux];
+			a[aux] = temp;
+			aux = aux/2;
+		}
 	}
+	howMany++;
 }
 
-void PriorityQHeap::pop(){
-	//pones al hijo mayor como el sucesor y recorres todo el arreglo haciendo esto
 
+void PriorityQHeap::pop(){//recorrido de izquierda a derecha en el arreglo
 	int aux = 1;
-	howMany--;
 
-	if(a[aux*2] > a[(aux*2)+1]){
-		a[aux] = a[aux*2];
-		aux = aux*2;
-	}else{
-		a[aux] = a[(aux*2)+1];
-		aux = (aux*2)+1;
-	}
-
-	for(int i=aux; i<howMany; i*=aux){
-		cout<<"hola"<<endl;
-		if(a[aux*2] > a[(aux*2)+1]){
-			a[aux] = a[aux*2];
-			aux = aux*2;
-		}else{
-			a[aux] = a[(aux*2)+1];
-			aux = (aux*2)+1;
+	while(aux <= howMany){
+		if(priority){
+			if(a[aux*2] > a[aux*2+1]) a[aux] = a[aux*2], aux = aux*2;
+			else a[aux] = a[aux*2+1], aux = aux*2+1;
+		}
+		else{
+			if(a[aux*2] < a[aux*2+1]) a[aux] = a[aux*2], aux = aux*2;
+			else a[aux] = a[aux*2+1], aux = aux*2+1;
 		}
 	}
+
+	if(howMany - aux/2 == 1)
+		a[aux/2] = a[aux/2+1];
+	if(howMany - aux/2 == 2){
+		a[aux/2] = a[aux/2+1];
+		a[aux/2+1] = a[aux/2+2];
+	}
+	howMany--;
 }
 
 int PriorityQHeap::top(){
