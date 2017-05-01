@@ -27,12 +27,8 @@ void anchura(bool mat[20][20], int n){
 void profundidad(bool mat[20][20], int n){
 	stack <int> s;
 	s.push(0);
-	vector<bool> v(n);
+	vector<bool> v(n,0);
 	int out;
-
-	for(int i = 0; i<n; i++){
-		v[i] = false;
-	}
 
 	while(!s.empty()){
 		out = s.top();
