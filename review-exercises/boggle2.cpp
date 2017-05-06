@@ -4,24 +4,30 @@
 #include <iomanip>
 using namespace std;
 
-bool adjacentCell(char matrix[4][4], int row, int column, string word, int aux){
+bool adjacentCell(char matrix[4][4], int row, int column, string word, int aux, bool b[4][4]){
 
-	if(matrix[row][column + 1] == word[aux] && column+1 < 4) return true;
-	if(matrix[row][column - 1] == word[aux] && column-1 > -1) return true;
-	if(matrix[row+1][column] == word[aux] && row+1 < 4) return true;
-	if(matrix[row-1][column] == word[aux] && row-1 > -1) return true;
-	if(matrix[row-1][column + 1] == word[aux] && row-1 > -1 && column+1 < 4) return true;
-	if(matrix[row+1][column + 1] == word[aux] && row+1 < 4 && column+1 < 4) return true;
-	if(matrix[row-1][column - 1] == word[aux] && row-1 > -1 && column-1 > -1) return true;
-	if(matrix[row+1][column - 1] == word[aux] && row+1 < 4 && column-1 > -1) return true;
+	if(matrix[row][column + 1] == word[aux] && column+1 < 4 && (!b[row][column+1])) return true;
+	if(matrix[row][column - 1] == word[aux] && column-1 > -1 && (!b[row][column-1])) return true;
+	if(matrix[row+1][column] == word[aux] && row+1 < 4 && (!b[row+1][column])) return true;
+	if(matrix[row-1][column] == word[aux] && row-1 > -1 && (!b[row-1][column])) return true;
+	if(matrix[row-1][column + 1] == word[aux] && row-1 > -1 && column+1 < 4 && (!b[row-1][column+1])) return true;
+	if(matrix[row+1][column + 1] == word[aux] && row+1 < 4 && column+1 < 4 && (!b[row+1][column+1])) return true;
+	if(matrix[row-1][column - 1] == word[aux] && row-1 > -1 && column-1 > -1 && (!b[row-1][column-1])) return true;
+	if(matrix[row+1][column - 1] == word[aux] && row+1 < 4 && column-1 > -1 && (!b[row+1][column-1])) return true;
 
 	return false;
 }
 
 bool acceptable(string word, char matrix[4][4]){
 
-	int aux=0;
+	int aux=0, iA, iB;
 	bool b[4][4];
+
+	for(int i=0; i<4; i++){
+		for(int j=0; j<4; j++){
+			b[i][j] = false;
+		}
+	}
 
 	while(aux < word.length()){
 		bool found = false, well = true;
@@ -30,15 +36,24 @@ bool acceptable(string word, char matrix[4][4]){
 				if(matrix[i][j] == word[aux] && aux != word.length()-1){
 					aux++;
 					if(well){
-						if(adjacentCell(matrix, i, j, word, aux)){
+						if(adjacentCell(matrix, i, j, word, aux, b)){
+							iA = i;
+							iB = j;
+							cout<<i<<j<<endl;
+							b[i][j] = true;
 							found = true;
 						}else{
 							aux--;
+							b[iA][iB] = false;
 							well= false;
 						}
 					}else if(!well){
-						if(adjacentCell(matrix, i, j, word, aux-2) && adjacentCell(matrix, i, j, word, aux)){
+						if(adjacentCell(matrix, i, j, word, aux-2, b) && adjacentCell(matrix, i, j, word, aux, b)){
 							found = true;
+							cout<<iA<<iB<<endl;
+							b[iA][iB] = true;
+							cout<<i<<j<<endl;
+							b[i][j] = true;
 							well = true;
 						}
 					}

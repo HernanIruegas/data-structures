@@ -82,7 +82,7 @@ bool LinkedList<T>::empty(){
 template <typename T>
 void LinkedList<T>::addFirst(T data){
 
-	head = new node<T>(data, head);//we are first passing head as a parameter (which points to NULL)
+	head = new node<T>(data, head);//we are first passing head as a parameter
 	size++;
 }
 
@@ -151,6 +151,7 @@ T LinkedList<T>::deleteLast(){
 	else{
 
 		node<T> *aux = head;
+		//te quedas en el antepenultimo nodo, porque tienes que poner su apuntador a NULL
 		while(aux->getNext()->getNext() != NULL){
 			aux = aux->getNext();
 		}
@@ -288,21 +289,18 @@ void LinkedList<T>::reverse(){
 		node<T> *aux = head;
 		node<T> *aux2 = head;
 
-		for(int i=0; i<size; i++){
+		aux = aux->getNext();
+		aux2->setNext(NULL);
 
-			if(i==0){
-				aux = aux->getNext();
-				aux2->setNext(NULL);
-			}else{
+		for(int i=0; i<size-1; i++){
 
-				aux2 = aux;
-				aux = aux->getNext();
-				aux2->setNext(head);
-				head = aux2;
+			aux2 = aux;
+			aux = aux->getNext();
+			aux2->setNext(head);
+			head = aux2;
 
-				if(i==size-1)
-					aux2 = NULL;
-			}
+			if(i==size-1)
+				aux2 = NULL;
 		}
 	}
 }

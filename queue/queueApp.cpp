@@ -4,16 +4,16 @@ using namespace std;
 
 int main(){
 		
-	queue<int> myStack;
-	myStack.push(20);
-	myStack.push(30);
-	cout<<"El tope es: "<<myStack.front()<<endl;
-	myStack.push(50);
-	myStack.push(10);
-	cout<<"La pila tiene: "<<myStack.size()<<" elementos"<<endl;
-	while(!myStack.empty()){
-		cout<<"saco a: "<<myStack.front()<<endl;
-		myStack.pop();
+	queue<int> myQueue;
+	myQueue.push(20);
+	myQueue.push(30);
+	cout<<"El tope es: "<<myQueue.front()<<endl;
+	myQueue.push(50);
+	myQueue.push(10);
+	cout<<"La pila tiene: "<<myQueue.size()<<" elementos"<<endl;
+	while(!myQueue.empty()){
+		cout<<"saco a: "<<myQueue.front()<<endl;
+		myQueue.pop();
 	}
 
 	return 0;
