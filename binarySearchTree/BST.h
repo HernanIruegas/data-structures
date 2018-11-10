@@ -135,7 +135,7 @@ void BST::erase(int data){
 
 	if(howMany == 2){
 		int newData = successor(aux);
-		erase(newData);
+		erase(newData); // estamos borrando un nodo hoja
 		aux->setData(newData);
 	}
 }
@@ -182,9 +182,10 @@ int BST::count(){
 	return count2(root);
 }
 
+// explicación gráfica = https://www.youtube.com/watch?v=sqVefIEttT0
 int BST::count2(nodeT *r){
 	if(r != NULL)
-		return 1 + count2(r->getLeft()) + count2(r->getRight());
+		return 1 + count2( r->getLeft() ) + count2( r->getRight() ); //Add the size of the left and right trees, then add 1 (which is the current node)
 	else
 		return 0;
 }
@@ -227,6 +228,7 @@ int BST::height(){
 	return height(aux);
 }
 
+// https://www.youtube.com/watch?v=_pnqMz5nrRs
 int BST::height(nodeT *aux){
 
 	int heightLeft = 0;
@@ -241,6 +243,22 @@ int BST::height(nodeT *aux){
         return heightLeft+1;
     else
         return heightRight+1;
+
+    /*
+	código del video 
+	if(aux == NULL ) return 0; // en el video se pone -1 pero se entiende de diferente manera a height
+	int leftHeight = height( aux -> getLeft);
+	int rightHeight = height( aux -> getRight);
+	
+	return max(leftHeight, rightHeight) + 1 ;
+
+    */
+
+    /* solución mas eficiente
+    if ( root == NULL ) return 0;
+    return 1 + max( maxDepth( root -> left ), maxDepth( root -> right ) );
+
+    */
 }
 
 void BST::ancestors(int data){
@@ -264,8 +282,8 @@ void BST::ancestors(int data){
 	}
 }
 
-int BST::whereLevelAmI(int data)
-{
+int BST::whereLevelAmI(int data){
+	
 	if(!search(data))	
 		return -1;
 	else{
@@ -277,15 +295,28 @@ int BST::whereLevelAmI(int data)
 		}
 		return i;
 	}
+
+	/* versión sin tener que hacer un search antes 
+	int i = 0;
+	while( aux != NULL && aux -> getData() != data){
+		aux = (aux->getData() > data) ? aux->getLeft() : aux->getRight();
+		i++;
+	}
+
+	if( aux == NULL ) return -1;
+
+	return i;
+
+	*/
 }
 
-void BST::printByLevel(nodeT *r)
-{
+void BST::printByLevel(nodeT *r){
+
 	queue <nodeT*> myQueue;
 	nodeT *aux = root;
 	myQueue.push(aux);
-	while(!myQueue.empty())
-	{
+	while(!myQueue.empty()){
+
 		aux = myQueue.front();
 		myQueue.pop();
 		cout << aux->getData() << " ";
@@ -305,7 +336,7 @@ int BST::maxWidth(){
 	if(root == NULL) 
 		return 0;
 
-	int maxWidth = 0, width;
+	int maxWidth = 0, width = 0;
 	myQueue.push(aux);
 
 	while(!myQueue.empty()){
@@ -480,6 +511,7 @@ int BST::smallest(){
 	return aux->getData();
 }
 
+// es lo mismo que la función de count para todo el arbol, solo tienes que pasar el apuntador a otro nodo
 int BST::descendants(int num){
 	nodeT *aux = root;
 	if(!search(num))
