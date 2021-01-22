@@ -1,6 +1,6 @@
 template <class T>
 class node{
-	
+
 	public:
 
 		node(T data);

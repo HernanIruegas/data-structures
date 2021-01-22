@@ -2,7 +2,9 @@
 using namespace std;
 #include "LinkedList.h"
 
-
+// Combinar dos LL un elemento por un elemento de cada una en una nueva LL
+// Tienes que encontrar la LL de menor tamaño y empezar a combinar
+// Acabas de combinar y solo falta append de los elementos que sobraron
 LinkedList<char> une(LinkedList<char> &FirstList, LinkedList<char> &otherList){
 
 		LinkedList<char> newList;
@@ -60,7 +62,15 @@ int main(){
 	otherLista.addFirst("tigre?");
 	otherLista.print();
 
-	/*  FUNCION UNE
+	cout<<"shift:"<<endl;
+	miLista.shift(3);
+	miLista.print();
+
+	cout<<"spin:"<<endl;
+	miLista.spin(2);
+	miLista.print();
+
+	/* FUNCION UNE
 	LinkedList<char> FirstList;
 	LinkedList<char> otherList;
 
@@ -76,7 +86,9 @@ int main(){
 	otherList.addLast('H');
 
 	LinkedList<char> newList = une(FirstList, otherList);
-	newList.print(); /*
+	newList.print(); 
+
+	*/
 
 	
 

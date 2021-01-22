@@ -79,13 +79,17 @@ bool LinkedList<T>::empty(){
 	return head == NULL; //is a condition
 }
 
+// Simplemente mover el head a un nuevo nodo y apuntar al pasado comienzo
 template <typename T>
 void LinkedList<T>::addFirst(T data){
 
-	head = new node<T>(data, head);//we are first passing head as a parameter
+	head = new node<T>(data, head);//we are first passing head as a parameter because it is pointing to NULL
 	size++;
 }
 
+// 2 casos: Si la LL está vacia o no
+// Si está vacia pues es un addFirst
+// Si no está vacia es de posicionarse en el ultimo nodo
 template <typename T>
 void LinkedList<T>::addLast(T data){
 
@@ -104,6 +108,9 @@ void LinkedList<T>::addLast(T data){
 	}
 }
 
+// Validar que no sean los casos del primero o el ultimo o fuera del rango
+// Posicionarme un nodo atras
+// Se maneja indice 0 para indicar posicion
 template <typename T>
 bool LinkedList<T>::add(T data, int pos){
 
@@ -131,7 +138,7 @@ bool LinkedList<T>::add(T data, int pos){
 	}
 }
 
-//precondiconón = sabes que existe un nodo en la linked list
+//precondición = sabes que existe un nodo en la linked list
 template <typename T>
 T LinkedList<T>::deleteFirst(){
 
@@ -151,7 +158,7 @@ T LinkedList<T>::deleteLast(){
 	else{
 
 		node<T> *aux = head;
-		//te quedas en el antepenultimo nodo, porque tienes que poner su apuntador a NULL
+		//te quedas en el penultimo nodo, porque tienes que poner su apuntador a NULL
 		while(aux->getNext()->getNext() != NULL){
 			aux = aux->getNext();
 		}
@@ -163,6 +170,7 @@ T LinkedList<T>::deleteLast(){
 	}
 }
 
+// Es importante que no se te olvide hacer delete al apuntador del nodo a ser borrado, por eso se crea un tercer apuntador
 template <typename T>
 T LinkedList<T>::del(int pos){
 
@@ -229,58 +237,39 @@ T LinkedList<T>::setInfoAnyPosition(T data, int position){
 	return dataAux;
 }
 
-
+// Es mas eficiente la solucion del profesor porque asi no tienes que repetir el traverse por los nodos que ya se pasaron
+// Imaginate que sea una LL de millones de nodos, traversing afecta
 template <typename T>
-T LinkedList<T>::swapInfoAnyPosition(int position, int secondPosition){
+T LinkedList<T>::swapInfoAnyPosition(int pos1, int pos2){
 
-	if(position<0 || position>size-1 || secondPosition<0 || secondPosition>size-1)
+	if(pos1 < 0 || pos1 > size - 1 || pos2 < 0 || pos2 > size - 1)
 		return false;
 
-	node<T> *aux = head;
-	node<T> *secondAux = head;
+	if(pos1 == pos2)
+		return true;
 
-	/*	proffessor solution
+	int posmen = (pos1 < pos2) ? pos1 : pos2;
+	int posmay = (pos1 > pos2) ? pos1 : pos2;
 
-		if(pos1 == pos2)
-			return true;
-
-		int posmen = (pos1<pos2) ? pos1 : pos2;
-		int posmay = (pos1>pos2) ? pos1 : pos2;
-
-		node<T> *aux1 = head, *aux2;
-		for(int i = 0; i<posmen; i++){
-			aux1 = aux->getNext();
-		}
-
-		aux2=aux1;
-		for(int i = posmen; i<posmay; i++){
-			aux2 = aux->getNext();
-		}
-	
-		T dataAux = aux1->getData();
-		aux1->setData(aux2->getData());
-		aux2->setData(dataAux);
-
-	*/
-
-	for(int i=0; i<position; i++){
-		aux = aux->getNext();
+	// Te posicionas en posmenor
+	node<T> *aux1 = head, *aux2 = head;
+	for(int i = 0; i < posmen; i++){
+		aux1 = aux1->getNext();
 	}
 
-	for(int i=0; i<secondPosition; i++){
-		secondAux = aux->getNext();
+	aux2=aux1; // Desde aqui (posmenor) arranca el nuevo recorrido y no desde el principio
+	for(int i = posmen; i < posmay; i++){
+		aux2 = aux2 -> getNext();
 	}
 
-	T dataAux = aux->getData();
-	T dataAux2 = secondAux->getData();
+	T dataAux = aux1 -> getData();
+	aux1 -> setData(aux2 -> getData());
+	aux2 -> setData(dataAux);
 
-	aux->setData(dataAux2);
-	secondAux->setData(dataAux);
-
-	return true;
-		
 }
 
+// Manejo de 3 apuntadores
+// muevo aux, luego aux2, luego apunto a head, luego muevo head
 template <typename T>
 void LinkedList<T>::reverse(){
 
@@ -289,35 +278,43 @@ void LinkedList<T>::reverse(){
 		node<T> *aux = head;
 		node<T> *aux2 = head;
 
+		// Me posiciono para empezar algoritmo, haciendo el primer nodo que apunte a NULL
 		aux = aux->getNext();
 		aux2->setNext(NULL);
 
-		for(int i=0; i<size-1; i++){
+		for(int i = 0; i < size - 1; i++){
 
+			// Avanzas aux2 y luego aux
 			aux2 = aux;
 			aux = aux->getNext();
+			// Haces que el nodo de aux2 apunte a head (que está atras)
 			aux2->setNext(head);
+			// Avanzas head
 			head = aux2;
 
-			if(i==size-1)
+			if(i == size - 1)
 				aux2 = NULL;
 		}
 	}
 }
 
+// Create circular LL, last node pointing to first node
+// Solo funciona para numeros positivos
+// Para negativos bastaria con hacer size + times, ya que times es negativo tonss va a dar un numero positivo
 template <typename T>
 void LinkedList<T>::shift(int times){
 
+	/*
 	int auxTimes = 0;
-
+	// Logica para input negativo TODO 
 	if(times<0){
 		reverse();
 		auxTimes = times;
 		times*=-1;
 	}
+	*/
 
-	//we first need to create a circular linkedList
-	//with the last node pointing to the first
+	// Creation of circular LL
 	node<T> *aux = head;
 	while(aux->getNext()!=NULL){
 		aux = aux->getNext();
@@ -327,17 +324,21 @@ void LinkedList<T>::shift(int times){
 	node<T> *aux2 = head;
 	node<T> *aux3 = head;
 
-	//now we locate our head pointer to the new beggining of the linkedList
+	// Now we locate our head pointer to the new beggining of the linkedList
+	// Ponemos aux2 un nodo antes del nuevo head para poder hacer set a NULL en el nuevo ultimo nodo de LL
 	for(int i = 0; i<size-times-1; i++){
 		aux2 = aux2->getNext();
 	}
 	head = aux2->getNext();
-	
 	//now we set to NULL the pointer of the new last node
 	aux2->setNext(NULL);
 
+	/*
+	// Esto es para volver a poner la LL de nuevo en el sentido correcto
+	// Para manejar input negativo
 	if(auxTimes<0)
 		reverse();
+	*/
 }
 
 template <typename T>
@@ -376,6 +377,7 @@ void LinkedList<T>::spin(int iN){
     }
 }
 
+// Lo importante aqui es usar const para que no se pueda modificar la LL que se pasa como parametro por referencia
 template <typename T>
 bool LinkedList<T>::operator==(const LinkedList<T> &otherList){
 
@@ -403,6 +405,7 @@ void LinkedList<T>::operator+=(T data){
 	addLast(data);
 }
 
+// Hacer un append de otro LL, es solo de ponerse en el final de una y principio de otra e ir creando nodos
 template <typename T>
 void LinkedList<T>::operator+=(const LinkedList<T> &otherList){
 
@@ -423,6 +426,9 @@ void LinkedList<T>::operator+=(const LinkedList<T> &otherList){
 	aux = NULL;
 }
 
+// Crea una LL igual a la que se pasa de argumento
+// Similar al del operador =, solo que no tienes que borrar todos los nodos
+// Se crea el primer nodo primero y luego se sigue el algoritmo
 template <typename T>
 LinkedList<T>::LinkedList(const LinkedList<T> &myLinkedList){
 
@@ -445,6 +451,7 @@ LinkedList<T>::LinkedList(const LinkedList<T> &myLinkedList){
 	}
 }
 
+// Se crea el primer nodo primero y luego se sigue el algoritmo
 template <typename T>
 void LinkedList<T>::operator=(const LinkedList<T> &otherList){
 
