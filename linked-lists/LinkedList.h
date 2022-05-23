@@ -32,7 +32,7 @@ class LinkedList{
 
 	private:
 		
-		node<T> *head;//head es un apuntador a un nodo
+		node<T>* head;//head es un apuntador a un nodo
 		int size;
 		void borraTodo();
 };
@@ -83,7 +83,7 @@ bool LinkedList<T>::empty(){
 template <typename T>
 void LinkedList<T>::addFirst(T data){
 
-	head = new node<T>(data, head);//we are first passing head as a parameter because it is pointing to NULL
+	head = new node<T>(data, head);//we are first passing head as a parameter
 	size++;
 }
 
@@ -245,9 +245,6 @@ T LinkedList<T>::swapInfoAnyPosition(int pos1, int pos2){
 	if(pos1 < 0 || pos1 > size - 1 || pos2 < 0 || pos2 > size - 1)
 		return false;
 
-	if(pos1 == pos2)
-		return true;
-
 	int posmen = (pos1 < pos2) ? pos1 : pos2;
 	int posmay = (pos1 > pos2) ? pos1 : pos2;
 
@@ -304,16 +301,6 @@ void LinkedList<T>::reverse(){
 template <typename T>
 void LinkedList<T>::shift(int times){
 
-	/*
-	int auxTimes = 0;
-	// Logica para input negativo TODO 
-	if(times<0){
-		reverse();
-		auxTimes = times;
-		times*=-1;
-	}
-	*/
-
 	// Creation of circular LL
 	node<T> *aux = head;
 	while(aux->getNext()!=NULL){
@@ -332,13 +319,6 @@ void LinkedList<T>::shift(int times){
 	head = aux2->getNext();
 	//now we set to NULL the pointer of the new last node
 	aux2->setNext(NULL);
-
-	/*
-	// Esto es para volver a poner la LL de nuevo en el sentido correcto
-	// Para manejar input negativo
-	if(auxTimes<0)
-		reverse();
-	*/
 }
 
 template <typename T>

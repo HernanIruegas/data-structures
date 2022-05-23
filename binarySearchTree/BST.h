@@ -75,8 +75,7 @@ bool BST::search(int data){
 }
 
 //father se queda siempre un nodo atras de aux, de tal manera
-//que cuando aux apunte a NULL, father está apuntando al nodo al que se le creará
-//un nuevo hijo con la info. del parametro
+//que cuando aux apunte a NULL, father está apuntando al nodo al que se le creará un nuevo hijo con la info. del parametro
 void BST::add(int data){ 
 	 
 	if(root == NULL){
@@ -97,7 +96,7 @@ void BST::add(int data){
 }
 
 // Igual usamos a father y aux, aux debe quedar en el nodo a borrar
-// Operacion para borrar nodo depende de cuantos hijos tiene el nodo (0,1,2)
+// Operacion para borrar nodo depende de cuantos hijos tiene el nodo a borrar (0,1,2)
 void BST::erase(int data){
 
 	nodeT *father = NULL;
@@ -154,6 +153,7 @@ int BST::howManyChildren(nodeT *r){
 	return count;
 }
 
+// El numero mas grande de los chicos
 int BST::predecessor(nodeT *r){
 	nodeT *aux = r->getLeft();
 	while(aux->getRight() != NULL){
@@ -163,6 +163,7 @@ int BST::predecessor(nodeT *r){
 	return aux->getData();
 }
 
+// El numero mas chico de los grandes
 int BST::successor(nodeT *r){
 
 	nodeT *aux = r->getRight();
@@ -197,7 +198,7 @@ void BST::inorder(nodeT *r){//sirve para desplegar los elementos en orden
 
 // Depth first traverse
 // (Left, Right, Root)
-void BST::postorder(nodeT *r){
+void BST::postorder(nodeT *r){// Sirve para borrar un BST
 
 	if(r != NULL){
 		postorder(r->getLeft());
@@ -224,10 +225,10 @@ int BST::count(){
 }
 
 // explicación gráfica = https://www.youtube.com/watch?v=sqVefIEttT0
-// Se hace un DSF
+// Se hace un DSF traverse
 int BST::count2(nodeT *r){
 	if(r != NULL)
-		return 1 + count2( r->getLeft() ) + count2( r->getRight() ); //Add the size of the left and right trees, then add 1 (which is the current node)
+		return 1 + count2(r->getLeft()) + count2(r->getRight()); //Add the size of the left and right trees, then add 1 (which is the current node)
 	else
 		return 0;
 }
@@ -257,8 +258,8 @@ int BST::height(nodeT *aux){
 
 
     //Misma solucion de arriba pero escrita mas corta
-    if ( root == NULL ) return 0;
-    return 1 + max( height( root -> left ), height( root -> right ) );
+    if ( aux == NULL ) return 0;
+    return 1 + max(height(aux -> left), height(aux -> right));
     
 
 	/* Misma solucion pero escrita mas larga
@@ -277,7 +278,7 @@ int BST::height(nodeT *aux){
 	*/
 }
 
-// Es un search con la diferencia de meter los nodos a un stack
+// Es un search iterativo con la diferencia de meter los nodos a un stack
 void BST::ancestors(int data){
 
 	nodeT *aux = root;
@@ -299,9 +300,10 @@ void BST::ancestors(int data){
 	}
 }
 
-// Primero nos posicionamos en el nodo con el numero
-// Luego Es lo mismo que la función de count para todo el arbol, solo tienes que pasar el nodo en el que estamos en lugar del root
+// Primero nos posicionamos en el nodo con el numero (esencialmente un search iterativo)
+// Luego es lo mismo que la función de count para todo el arbol, solo tienes que pasar el nodo en el que estamos en lugar del root
 // Si el numero no existe se regresa -1
+// Calcular el numero de nodos decendientes
 int BST::descendants(int num){
 	nodeT *aux = root;
 
@@ -312,8 +314,8 @@ int BST::descendants(int num){
 	if(aux == NULL)
 		return -1
 
-	// Le restamos 1 porque no se cuenta el nodo en el que estamos
-	// El valor lo ponemos en positivo
+	// Le restamos 1 porque no se cuenta el nodo en el que estamos (solo se cuentan descendientes)
+	// El valor lo ponemos en positivo al mulitplicar por -1
 	return (1 - (count3( aux ))) * -1; 
 }
 
@@ -393,7 +395,7 @@ int BST::maxWidth(){
 // El ancestro mas cercano es cuando los caminos para encontrar ambos numeros divergen
 // Despues de divergir, solo tienes que asegurarte que existan en el arbol los dos numeros
 int BST::nearstRelative(int num1, int num2){
-	nodeT *aux = root, *aux2;
+	nodeT *aux = root, *aux2; // aux es el apuntador que se mueve en el search mientras que aux2 es el que apunta al nearest relative en case de encontrar a un numero de los recibidos de argumentos
 	while(aux != NULL && aux->getData() != num1 && aux->getData() != num2){
 			if(aux->getData() > num1 && aux->getData() > num2){
 				aux2 = aux;
@@ -411,8 +413,9 @@ int BST::nearstRelative(int num1, int num2){
 	}
 	if(aux == NULL) 
 		return -1;
-	else 
-		return aux2->getData();
+	else // Este es el edge case para cuando envez de divergir, encontramos a un numero en el arbol. En ese case aux apunta a un numero de los recibidos de argumentos y aux2 a su posible nearest relative
+		if(search2(aux,num1) && search2(aux,num2))
+			return aux2->getData();
 }
 
 // Funcion auxiliar para ver si existe un numero en el arbol
@@ -438,7 +441,7 @@ int BST::smallest(){
 int BST::printNodesAtLevel(int level){
 	nodeT *aux = root;
 	if(aux==NULL) return 0;
-	int n=0, size=0;
+	int n=0, size=0; // n es el contador de niveles y size es el width del nivel en el que estamos
 	queue <nodeT*> myQueue;
 	myQueue.push(aux);
 
